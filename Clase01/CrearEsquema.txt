@@ -1,0 +1,7 @@
+1.- Crear el usuario: DEMO
+2.- Asignar privilegios, roles y espacio.
+    (espacio solo si sera un esquema)
+3.- El usuario (DEMO) crea sus objetos.
+4.- Nace el esquema DEMO.
+
+

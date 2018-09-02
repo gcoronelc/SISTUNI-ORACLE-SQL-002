@@ -1,3 +1,10 @@
 - Configurar Git.
 - Clonar repositorio.
+- Introducción Oracle
 - Instalar Oracle
+- Crear esquemas de trabajo
+- SQL Developer
+- Consultas a una tabla
+
+
+
