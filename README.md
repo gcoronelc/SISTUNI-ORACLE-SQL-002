@@ -9,6 +9,7 @@
 - Dirección: https://goo.gl/maps/98vwAt9NZMU2
 - Página: https://github.com/gcoronelc/SISTUNI-ORACLE-SQL-001
 - Código fuente: https://goo.gl/GRaOQg
+- Videos del Curso: https://www.youtube.com/watch?v=Rir3JBLeY94&list=PLIRq7nByT7aQwSjEWU09xLC1UWSHdG-GM
 
 # DOCENTE
 
