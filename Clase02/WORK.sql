@@ -107,8 +107,71 @@ SELECT COUNT(DISTINCT CUR_PROFESOR) FROM EDUCA.CURSO;
 -- Planilla de ventas
 SELECT SUM( SALARY ) PLANILLA 
 FROM HR.employees 
-WHERE department_id = ;
+WHERE department_id = 80;
 
+
+select * from eureka.cuenta;
+
+
+-- Cuantas cuentas tiene cada cliente
+
+select chr_cliecodigo, count(*) cuentas
+from eureka.cuenta
+group by chr_cliecodigo;
+
+
+-- Ejercicios en EUREKA
+
+-- Ejercicio 1
+-- Cuentas cuentas hay pro tipo de moneda.
+
+-- Ejercicio 2
+-- Cuantas cuentas ha creado cada empleado. 
+
+-- Ejercicios en HR
+
+-- Ejercicio 3
+-- Cuantos empleado hay por departamento.
+
+-- Ejercicio 4
+-- Cuantos empleados hay por puesto de trabajo
+-- en cada departamento. 
+
+
+-- HAVING
+
+select department_id, COUNT(*) EMPLEADOS 
+from HR.employees 
+WHERE department_id IS NOT NULL 
+group by department_id
+HAVING COUNT(*) = 1;
+
+-- RETO
+-- Que departamento tiene la mayor
+-- cantidad de empleados
+
+
+WITH 
+V1 AS (
+    select department_id, COUNT(*) EMPLEADOS 
+    from HR.employees 
+    WHERE department_id IS NOT NULL 
+    group by department_id
+    ORDER BY 2 DESC
+)
+SELECT * FROM V1
+WHERE ROWNUM = 1;
+
+
+WITH 
+V1 AS (
+    select department_id, COUNT(*) EMPLEADOS 
+    from HR.employees 
+    WHERE department_id IS NOT NULL 
+    group by department_id
+)
+SELECT * FROM V1
+WHERE EMPLEADOS = (SELECT MAX(EMPLEADOS) FROM V1);
 
 
 
