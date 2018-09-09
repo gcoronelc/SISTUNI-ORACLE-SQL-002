@@ -1,0 +1,36 @@
+--En el esquema eureka
+
+--Ejercicio 1
+
+--Cuantas cuentas hay por tipo de moneda
+select chr_monecodigo, count(*) as NROCUENTAS
+from eureka.cuenta
+group by chr_monecodigo;
+
+--Ejercicio 2
+
+--Cuantas cuentas ha creado un empleado
+select chr_emplcreacuenta, count(*) as NROCUENTAS
+from eureka.cuenta
+group by chr_emplcreacuenta;
+
+--En HR
+
+--Ejercicio 3
+--Cuantos empleados hay por departamento
+select department_id as "DEPARTAMENTO", count(*) as NROEMPLEADOS
+from hr.employees
+group by department_id
+order by department_id;
+
+select * from HR.departments;
+
+--Ejercicio 4
+
+--Cuantos empleados hay por puesto de trabajo 
+--en cada departamento
+
+select department_id as "DEPARTAMENTO", job_id as "PUESTO",
+count(*) as NROEMPLEADOS from hr.employees
+group by department_id, job_id order by department_id, job_id;
+

@@ -54,6 +54,16 @@ and extract(year from hire_date) = 1981;
 
 
 
+/*
+Ejercicio 16
+
+Desarrollar una sentencia SELECT para consultar los 
+empleados que su salario esta entre 3500.00 y 10000.00. 
+Esquema HR.
+
+*/
+
+
 
 
 

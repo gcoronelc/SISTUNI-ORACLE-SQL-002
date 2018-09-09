@@ -1,0 +1,37 @@
+-- ejemplos
+-- 7
+SELECT * FROM HR.employees where first_name like '%e_';
+SELECT * FROM SCOTT.emp where ename like '%E_';
+
+-- 8
+SELECT * FROM HR.employees where first_name like '%o';
+
+--9
+select * from HR.employees
+WHERE upper(substr(last_name,2,1)) in ('A','O');
+
+---10
+SELECT *
+FROM HR.employees
+WHERE salary BETWEEN  3000 and 1000 ;
+
+rem ******* OPERADORES LIKE, BETWEEN, IN, IS , NULL*******
+REM EJERCICIO 12
+select * 
+from HR.employees
+where commission_pct is null
+
+select * 
+from SCOTT.emp
+where comm is null
+
+
+
+REM EJERCICIO 11
+REM 1RO CONSULTAR DEPARTAMENTOS
+SELECT * FROM hr.departments
+ORDER BY DEPARTMENT_NAME
+
+SELECT * 
+FROM HR.EMPLOYEES
+WHERE DEPARTMENT_ID IN (110,40, 50)
