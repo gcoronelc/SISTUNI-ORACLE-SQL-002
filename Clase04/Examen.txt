@@ -1,0 +1,6 @@
+Desarrollar un modelo de datos
+con minimo 5 tabla.
+
+Plantear 20 requerimientos y resolverlos.
+
+Deben aplicar lo visto durante el curso.

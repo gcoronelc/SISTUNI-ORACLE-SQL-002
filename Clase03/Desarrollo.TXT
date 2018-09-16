@@ -8,5 +8,6 @@
 - Tratamiento de nulos
 - Tratamiento de Fechas
 - GROUP BY y HAVING
-
+- Consultas Multitablas
+- Modificación de datos
 
