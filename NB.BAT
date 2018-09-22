@@ -1,0 +1,1 @@
+"E:\Program Files\NetBeans 8.2\bin\netbeans64.exe" -J-Duser.language=en --fontsize 18 --console suppress

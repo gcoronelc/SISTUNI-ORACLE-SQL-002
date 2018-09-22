@@ -1,0 +1,13 @@
+- Configurar Git.
+- Clonar repositorio.
+- Introducción Oracle
+- Instalar Oracle
+- Crear esquemas de trabajo
+- SQL Developer
+- Consultas a una tabla
+- Tratamiento de nulos
+- Tratamiento de Fechas
+- GROUP BY y HAVING
+- Consultas Multitablas
+- Modificación de datos
+
