@@ -10,4 +10,12 @@
 - GROUP BY y HAVING
 - Consultas Multitablas
 - Modificación de datos
+- Transacciones
+- Creacion de un esquema demo
+- Primary Key y Foreign Key
+- Check: Columna o Registro
+
+
+
+
 

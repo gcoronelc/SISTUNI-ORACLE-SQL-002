@@ -1,0 +1,371 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang10250{\fonttbl{\f0\fnil\fcharset0 Calibri;}}
+{\*\generator Riched20 6.2.9200}\viewkind4\uc1 
+\pard\sa200\sl276\slmult1\f0\fs22\lang10\par
+-- =============================================\par
+-- CRACIN DEL USUARIO\par
+-- =============================================\par
+\par
+DECLARE\par
+\tab N INT;\par
+\tab COMMAND VARCHAR2(200);\par
+BEGIN\par
+\tab COMMAND := 'DROP USER FARMACIA CASCADE';\par
+\tab SELECT COUNT(*) INTO N\par
+\tab FROM DBA_USERS\par
+\tab WHERE USERNAME = 'FARMACIA';\par
+\tab IF ( N = 1 ) THEN\par
+\tab\tab EXECUTE IMMEDIATE COMMAND;\par
+\tab END IF;\par
+END;\par
+/\par
+\par
+\par
+CREATE USER FARMACIA IDENTIFIED BY admin;\par
+\par
+GRANT CONNECT, RESOURCE TO FARMACIA;\par
+\par
+ALTER USER FARMACIA\par
+QUOTA UNLIMITED ON USERS;\par
+\par
+GRANT CREATE VIEW TO FARMACIA;\par
+\par
+\par
+\par
+-- =============================================\par
+-- CONECTARSE A LA APLICACIN\par
+-- =============================================\par
+\par
+CONNECT FARMACIA/admin\par
+\par
+\par
+\par
+create table FARMACIA.Usuario\par
+(\par
+cod_usu varchar(8)primary key not null,\par
+cod_emp varchar(8)not null,\par
+nivel_usu varchar(2)not null,\par
+nom_usu varchar(30)not null,\par
+password varchar(10) not null,\par
+activo varchar(2) not null\par
+)\par
+\par
+\par
+CREATE table FARMACIA.Clientes\par
+(\par
+cod_cli varchar(8) primary key not null,\par
+nom_cli varchar(40)not null,\par
+dir_cli varchar(40) null,\par
+cod_dis varchar(8)null,\par
+sexo varchar(1)not null,\par
+DNI INT NULL,\par
+RUC int null,\par
+Telefono int null,\par
+Celular int null\par
+)\par
+\par
+\par
+create table FARMACIA.OrdenPedido\par
+(\par
+num_ordenPedido varchar(8) primary key not null,\par
+fecha date not null,\par
+cod_cli varchar (8) null,\par
+nom_cli varchar(40)null,\par
+cod_emp varchar(8) null, \par
+cod_tipoPago varchar(8) null, \par
+total int null \par
+) \par
+\par
+\par
+create table FARMACIA.Distrito \par
+( \par
+cod_dis varchar(8)primary key not null, \par
+nom_dis varchar(40) not null \par
+) \par
+\par
+\par
+\par
+create table FARMACIA.Categoria \par
+( \par
+cod_cate varchar(8)primary key not null, \par
+nom_des varchar(40)not null \par
+) \par
+\par
+\par
+create table FARMACIA.Producto \par
+( \par
+cod_pro varchar(8)primary key not null, \par
+nom_pro varchar(40)not null, \par
+pre_venta decimal(10,2) not null, \par
+pre_compra decimal(10,2) not null, \par
+fecha_venc date not null, \par
+stock int not null, \par
+cod_cate varchar(8)not null, \par
+cod_prov varchar(8)null, \par
+cod_pres varchar(8)null \par
+) \par
+\par
+\par
+\par
+create table FARMACIA.Empleado \par
+( \par
+cod_emp varchar(8)primary key not null, \par
+nom_emp varchar(40)not null, \par
+dir_emp varchar(40)null, \par
+cod_dis varchar(8)not null, \par
+cargo varchar(40) not null, \par
+edad varchar(2)null, \par
+tel int not null, \par
+cel int null, \par
+ingreso date not null,\par
+clave varchar (20) not null\par
+) \par
+\par
+\par
+create table FARMACIA.DetalleOrdenPedido \par
+( \par
+num_ordenp varchar(8)primary key not null, \par
+cod_pro varchar(8) not null, \par
+nom_pro varchar(40) not null, \par
+cantidad decimal(10,2)null, \par
+precio_venta decimal(10,2), \par
+importe decimal(10,2) \par
+) \par
+\par
+\par
+create table FARMACIA.Boleta \par
+(\par
+num_boleta varchar(8) primary key not null, \par
+fecha date not null, \par
+cod_empl varchar(8) not null, \par
+cod_cli varchar(8)not null, \par
+num_ordenpedido varchar(8)not null, \par
+subtotal int not null, \par
+descuento int null, \par
+total int not null \par
+) \par
+\par
+\par
+create table FARMACIA.Presentacion \par
+( \par
+cod_pre varchar(8)primary key not null,\par
+nom_pre varchar(50)null\par
+) \par
+\par
+create table FARMACIA.Proveedor \par
+( \par
+cod_prov varchar(8)primary key not null,\par
+nom_prov varchar(40)not null,\par
+dir_prov varchar(50)null,\par
+telefono char(7)null,\par
+celular char(10)null,\par
+id_distrito varchar(8)null \par
+) \par
+\par
+\par
+-- UNION Y RESTRICCIONES CLAVES SECUNDARIAS \par
+\par
+  alter table FARMACIA.ordenpedido \par
+  add constraint pk_cod_cli foreign key(cod_cli) references FARMACIA.clientes(cod_cli) \par
+\par
+  alter table FARMACIA.clientes \par
+  add constraint pk_cod_dis_cli foreign key (cod_dis) references FARMACIA.distrito(cod_dis) -- no funciona nose por que \par
+ \par
+  alter table FARMACIA.producto \par
+  add constraint pk_cod_cate foreign key(cod_cate) references FARMACIA.categoria(cod_cate)\par
+  \par
+  alter table FARMACIA.empleado \par
+  add constraint pk_cod_dis foreign key (cod_dis) references FARMACIA.distrito(cod_dis)\par
+  \par
+  alter table FARMACIA.ordenpedido \par
+  add constraint pk_cod_enpL foreign key (cod_emp) references FARMACIA.empleado(cod_emp)\par
+  \par
+  alter table FARMACIA.ordenpedido \par
+  add constraint pk_cod_clis foreign key(cod_cli) references FARMACIA.clientes(cod_cli)\par
+  \par
+  alter table FARMACIA.detalleordenPedido \par
+  add constraint pk_cod_pro foreign key (cod_pro) references FARMACIA.producto(cod_pro)\par
+  \par
+  alter table FARMACIA.boleta \par
+  add constraint pk_or_pedi foreign key (num_ordenpedido) references FARMACIA.ordenpedido(num_ordenpedido)\par
+  \par
+  alter table FARMACIA.ordenpedido \par
+  add constraint pk_cod_empl foreign key (cod_emp) references FARMACIA.empleado(cod_emp)\par
+  \par
+  alter table FARMACIA.producto \par
+  add constraint pk_cod_prove foreign key(cod_prov) references FARMACIA.proveedor(cod_prov)\par
+  \par
+  alter table FARMACIA.producto \par
+  add constraint pk_cod_presentacion foreign key(cod_pres) references FARMACIA.presentacion(cod_pre)\par
+  \par
+  alter table FARMACIA.usuario \par
+  add constraint pk_cod_emple foreign key(cod_emp) references FARMACIA.empleado(cod_emp)\par
+  \par
+  alter table FARMACIA.proveedor \par
+  add constraint pk_cod_dis_pro foreign key(id_distrito) references FARMACIA.distrito(cod_dis)\par
+\par
+  alter table FARMACIA.clientes \par
+  add constraint uni_dni unique(dni)\par
+\par
+  alter table FARMACIA.clientes \par
+  add constraint CK_SEXO CHECK(SEXO IN('M','F'))\par
+\par
+--RESTRICCIONES VALIDACION DE CAMPOS \par
+  alter table FARMACIA.distrito add constraint uni_distrito unique(nom_dis)  \par
+  alter table FARMACIA.clientes add constraint CK_DNI CHECK(LENGTH(dni)=8)\par
+\par
+\par
+--INSERTAMOS DATOS SELECT ID FROM Usuario;\par
+select * from Distrito\par
+insert into Distrito values ('062','LURIGANCHO'),\par
+                            ('065','CHOSICA'),\par
+                            ('034','VICTORIA'),\par
+                            ('054','ATE'),\par
+                            ('056','LIMA')\par
+\par
+select * from Empleado\par
+insert into Empleado values('24360992','APONTE VENGAS','LIMA S/N','065','ADMIN','24',8346543,997287215,'','1234'),\par
+                           ('65646454','LUIS CASTILLO','LIMA S/N','034','SERVI','24',8346543,137287223,'','1234'),\par
+                           ('94364339','ERIK LOCAL','LIMA S/N','054','SERVI','94',9994576,137987923,'','1934'),\par
+                           ('94360139','FREDY QUISPE','LIMA S/N','056','SUPERVISOR','94',9994556,137987223,'','1234'),\par
+                           ('20140152','HARRY VARGAS','LIMA S/N','062','SUPERVISOR','24',8346543,137287431,'','1234'),\par
+                           ('20566162','MANOLO MANILIN','LIMA S/N','065','FARMACEUTICO','24',2224562,137287253,'','1234'),\par
+                           ('28748376','JOSE CONDOR','LIMA S/N','034','FARMACEUTICO','24',2224561,997287215,'','1234')\par
+select * from Usuario\par
+insert into Usuario values('12345678','24360992','1','HARRY','1234','si' ),\par
+                          ('23456789','65646454','2','BLADI','4343','si' ),\par
+                          ('98765654','94364339','3','RUBI','6656','si' ),\par
+                          ('23445348','94360139','4','JESUS','2365','si' ),\par
+                          ('23457878','20140152','5','ROBERT','6572','si' )\par
+ \par
+select * from Clientes\par
+insert into Clientes values ('34984835','CLEMENTE','LIMA S/N','062','M',72884742,1072884742,3288428,997547215),\par
+                            ('45346576','HARRY','LIMA S/N','065','M',84884342,1084884342,3266428,997547655),\par
+                            ('45346523','RUFUEL','LIMA S/N','034','M',84884042,1084884042,3266428,997547699),\par
+                            ('45346524','DANTE','LIMA S/N','054','M',84884942,1084884942,3266428,997547688),\par
+                            ('45346525','LUIS','LIMA S/N','056','M',84884765,1084884652,3266428,997547677)\par
+\par
+select * from OrdenPedido\par
+insert into OrdenPedido values ('88883425','2016-08-08','34984835','HARRY VARGAS','24360992','44333475',245),\par
+                               ('88883426','2016-08-08','45346576','LUIS BARIOS','65646454','43334634',80),\par
+                               ('88883427','2016-08-08','45346523','GLADYS SOTO','94364339','44335457',600),\par
+                               ('88883428','2016-08-08','45346524','LOLA APAZA','94360139','44895645',6754),\par
+                               ('88883429','2016-08-08','45346525','PILAR QUISPE','20140152','44304674',345)\par
+\par
+select * from Categoria \par
+insert into Categoria  values ('34345','PARA LOS DOLORES MUSCULARES'),\par
+                              ('56445','PARA LOS DOLORES MUELAS'),\par
+                              ('87653','PARA LOS DOLORES CABEZA'),\par
+                              ('24567','DESINFLAMANTE DE ROSTRO'),\par
+                              ('99767','RESFRIO'),\par
+                              ('23423','FIEBRE')\par
+\par
+select * from Proveedor\par
+insert into Proveedor values('00128','luis las casa','lima VICTORIA s/n','3244550','997287262','062'),\par
+                            ('00823','las vegas','lima VICTORIA s/n','3246343','997284534','065'),\par
+                            ('00123','okas','lima VICTORIA s/n','3244334','9972872344','034'),\par
+                            ('00824','farmedi','lima VICTORIA s/n','3246343','997287564','054'),\par
+                            ('00127','faresca','lima VICTORIA s/n','3246450','997654566','056') \par
+\par
+select * from Presentacion\par
+insert into Presentacion values('0026','HARRY VARGAS'),\par
+                               ('0027','RUFUEL SOTO'),\par
+                               ('0028','ANGEL ANGUILA'),\par
+                               ('0029','ROBERT LAS CASAS'),\par
+                               ('0030','LUIS ISU')\par
+\par
+select * from Producto \par
+insert into Producto  values('090398','ASPIRINAS','0.80','0.30','',20,'34345','00128','0026'),\par
+                            ('000938','PANADOL','1.50','0.60','',20,'56445','00823','0027'),\par
+                            ('090358','DOLOCONTO','1.00','0.50','',20,'87653','00123','0028'),\par
+                            ('003903','CELESTAL','2.00','1.00','',20,'24567','00824','0029'),\par
+                            ('003983','FORTE AS','4.00','1.00','',20,'99767','00127','0030')\par
+\par
+ \par
+select * from DetalleOrdenPedido\par
+insert into DetalleOrdenPedido values('32','090398','ASPIRINAS','19.3','2.50','0.12'),\par
+                                     ('53','000938','PANADOL','19.3','2.50','0.14'),\par
+                                     ('44','090358','DOLOCONTO','19.3','1.50','0.18'),\par
+                                     ('43','003903','CELESTAL','15.3','1.50','0.12'),\par
+                                     ('55','003983','FORTE AS','15.3','2.50','0.12')\par
+\par
+select * from Boleta\par
+insert into Boleta values ('12345678',' ','00123','00819','88883425','342',340,10.430),\par
+                          ('98237844',' ','00123','00829','88883426','744',340,10.560),\par
+                          ('23437844',' ','00123','00814','88883427','345',300,10.290),\par
+                          ('12345676',' ','00123','00267','88883428','644',340,10.560),\par
+                          ('12344632',' ','00123','00534','88883429','746',240,30.200)\par
+  \par
+ \par
+\par
+  \par
+--CONSULTAS \par
+-- seleccionar una tabla mas  los nombres de columnas \par
+-- NAME COLUMNA + , OTRO NAME COLUMNA + LA TABLA \par
+select nom_pro, cantidad from DetalleOrdenPedido\par
+\par
+\par
+-- Buscar en una tabla un nombre que comience son la letra r% para que terminen '%a'\par
+--NOMBRE DE COLUMNA + NOMBRE DE TABLA  + NOMBRE DE COLUMNA + LAS INICIALES ABC\par
+select  nom_pro from  DetalleOrdenPedido  WHERE nom_pro like 'a%'\par
+\par
+\par
+--- para ver cuantos archivos estan registrados \par
+SELECT COUNT(*) FROM DetalleOrdenPedido\par
+insert into FACTURA.OrdenPedido (NUM_ORDENPEDIDO, FECHA,COD_CLI,NOM_CLI,COD_EMP, COD_TIPOPAGO,TOTAL)\par
+values ('88883425','2016-08-08','34984835','HARRY VARGAS','24360992','44333475',245),\par
+insert into FACTURA.OrdenPedido (NUM_ORDENPEDIDO, FECHA,COD_CLI,NOM_CLI,COD_EMP, COD_TIPOPAGO,TOTAL)\par
+values('88883426','2016-08-08','45346576','LUIS BARIOS','65646454','43334634',80),\par
+insert into FACTURA.OrdenPedido (NUM_ORDENPEDIDO, FECHA,COD_CLI,NOM_CLI,COD_EMP, COD_TIPOPAGO,TOTAL)\par
+values('88883427','2016-08-08','45346523','GLADYS SOTO','94364339','44335457',600),\par
+insert into FACTURA.OrdenPedido (NUM_ORDENPEDIDO, FECHA,COD_CLI,NOM_CLI,COD_EMP, COD_TIPOPAGO,TOTAL)\par
+values('88883428','2016-08-08','45346524','LOLA APAZA','94360139','44895645',6754),\par
+insert into FACTURA.OrdenPedido (NUM_ORDENPEDIDO, FECHA,COD_CLI,NOM_CLI,COD_EMP, COD_TIPOPAGO,TOTAL)\par
+values('88883429','2016-08-08','45346525','PILAR QUISPE','20140152','44304674',345)\par
+\par
+select * from Categoria \par
+insert into Categoria  values ('34345','PARA LOS DOLORES MUSCULARES'),\par
+                              ('56445','PARA LOS DOLORES MUELAS'),\par
+                              ('87653','PARA LOS DOLORES CABEZA'),\par
+                              ('24567','DESINFLAMANTE DE ROSTRO'),\par
+                              ('99767','RESFRIO'),\par
+                              ('23423','FIEBRE')\par
+\par
+select * from Proveedor\par
+insert into Proveedor values('00128','luis las casa','lima VICTORIA s/n','3244550','997287262','062'),\par
+                            ('00823','las vegas','lima VICTORIA s/n','3246343','997284534','065'),\par
+                            ('00123','okas','lima VICTORIA s/n','3244334','9972872344','034'),\par
+                            ('00824','farmedi','lima VICTORIA s/n','3246343','997287564','054'),\par
+                            ('00127','faresca','lima VICTORIA s/n','3246450','997654566','056') \par
+\par
+select * from Presentacion\par
+insert into Presentacion values('0026','HARRY VARGAS'),\par
+                               ('0027','RUFUEL SOTO'),\par
+                               ('0028','ANGEL ANGUILA'),\par
+                               ('0029','ROBERT LAS CASAS'),\par
+                               ('0030','LUIS ISU')\par
+\par
+select * from Producto \par
+insert into Producto  values('090398','ASPIRINAS','0.80','0.30','',20,'34345','00128','0026'),\par
+                            ('000938','PANADOL','1.50','0.60','',20,'56445','00823','0027'),\par
+                            ('090358','DOLOCONTO','1.00','0.50','',20,'87653','00123','0028'),\par
+                            ('003903','CELESTAL','2.00','1.00','',20,'24567','00824','0029'),\par
+                            ('003983','FORTE AS','4.00','1.00','',20,'99767','00127','0030')\par
+\par
+ \par
+select * from DetalleOrdenPedido\par
+insert into DetalleOrdenPedido values('32','090398','ASPIRINAS','19.3','2.50','0.12'),\par
+                                     ('53','000938','PANADOL','19.3','2.50','0.14'),\par
+                                     ('44','090358','DOLOCONTO','19.3','1.50','0.18'),\par
+                                     ('43','003903','CELESTAL','15.3','1.50','0.12'),\par
+                                     ('55','003983','FORTE AS','15.3','2.50','0.12')\par
+\par
+select * from Boleta\par
+insert into Boleta values ('12345678',' ','00123','00819','88883425','342',340,10.430),\par
+                          ('98237844',' ','00123','00829','88883426','744',340,10.560),\par
+                          ('23437844',' ','00123','00814','88883427','345',300,10.290),\par
+                          ('12345676',' ','00123','00267','88883428','644',340,10.560),\par
+                          ('12344632',' ','00123','00534','88883429','746',240,30.200)\par
+  \par
+ \par
+}
+ 
